@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+		@import url('https://fonts.googleapis.com/css?family=Courgette&display=swap');
+		body{
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			height: 100vh;
+			background: #000;
+			overflow: hidden;
+			font-family: 'Roboto', sans-serif;
+		}
+
+		/* #Cursor
+		================================================== */
+		.cursor,
+		.cursor2,
+		.cursor3{
+			position: fixed;
+			border-radius: 50%;	
+			transform: translateX(-50%) translateY(-50%);
+			pointer-events: none;
+			left: -6.25rem;
+			top: 50%
+		}
+		.cursor{
+			background-color: #fff;
+			height: 0;
+			width: 0;
+			z-index: 99999;
+		}
+		.cursor2,.cursor3{
+			height: 2.25rem;
+			width: 2.25rem;
+			z-index:99998;
+			transition:all 0.3s ease-out
+		}
+		.cursor2.hover,
+		.cursor3.hover{
+			transform:scale(2) translateX(-25%) translateY(-25%);
+			border:none
+		}
+		.cursor2{
+			border: 0.125rem solid #fff;
+			box-shadow: 0 0 1.375rem rgba(255, 255, 255, 0.6);
+		}
+		.cursor2.hover{
+			background: rgba(255,255,255,.1);
+			box-shadow: 0 0 0.75rem rgba(255, 255, 255, 0.2);
+		}
+
+		/* #Slider
+		================================================== */
+
+		.section{
+			position: relative;
+			width: 100%;
+			display: block;
+			overflow: hidden;
+			height: 100vh;
+			background-color: #212121;
+		}
+
+		/* Case Study Showcase
+		================================================== */
+
+		.menu {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			z-index: 10;
+			width: auto;
+			margin: 0;
+			padding: 0;
+			transform: translate(-50%, -50%);
+			list-style: none;
+		}
+		.menu .menu-links a {
+			position: relative;
+			list-style: none;
+			margin: 0;
+			display: block;
+			text-align: center;
+			padding: 0;
+			font-size: 1.75rem;
+			margin-top: 1.5625rem;
+			margin-bottom: 1.5625rem;
+			font-weight: 500;
+			line-height: 1.3;
+			letter-spacing: 0.125rem;
+			color: #8e8d9a;
+			opacity: 0.5;
+			text-decoration: none;
+			transition: all 300ms linear; 
+		}	
+		.menu .menu-links a:hover {
+			text-decoration: none;
+		}	
+		.menu .menu-links.active a {
+			opacity: 1;
+			color: #fff;
+		}	
+		.menu-items {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			margin:0;
+			z-index:2;
+		}	
+		.menu-items li {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			overflow: hidden;
+			list-style:none;
+			transition: all 300ms linear; 
+		}	
+		.menu-items li .menu-background{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			background-size: cover;
+			background-position:center center;
+			background-repeat:no-repeat;
+			top: 0;
+			left: 0;
+			overflow: hidden;
+			list-style:none;
+			opacity: 0;
+			transform: translateY(-1.875rem);
+			transition: all 300ms linear; 
+		}
+		.menu-items li.show .menu-background {
+			opacity: 1;
+			transform: translateY(0);
+		} 
+		.menu-items li .menu-desc{
+			position: absolute;
+			bottom: 9.375rem;
+			left: 1.875rem;
+			display: block;
+			opacity: 0;
+			color: #fff;
+			z-index: 19;
+			letter-spacing: 0.0625rem;
+			font-size: 0.875rem;
+			writing-mode: vertical-lr;
+			font-weight: 400;
+			line-height: 1rem;
+			color: #fff; 
+			font-style: italic;
+			transform: translateX(-100%);
+			transition: all 300ms linear; 
+		}
+		.menu-items li.show .menu-desc {
+			opacity: 1;
+			transform: translateX(0);
+			font-family: 'Courgette';
+		} 
+		.menu-items li .link-number-back{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			display: block;
+			list-style:none;
+			opacity: 0;
+			font-size: 18vw;
+			font-weight: 900;
+			line-height: 1;
+			color: rgba(255,255,255,.12);
+			z-index: 1;
+			transition: all 300ms linear; 
+		} 
+		.menu-items li .link-number{
+			position: absolute;
+			bottom: 2.5rem;
+			left: 50%;
+			width: 2.5rem;
+			margin-left: -4.375rem;
+			display: block;
+			letter-spacing: 0.125rem;
+			text-align: center;
+			list-style:none;
+			opacity: 0;
+			font-size: 0.8125rem;
+			font-weight: 300;
+			line-height: 1;
+			color: #fff;
+			z-index: 6;
+			transform: translateY(100%);
+			transition: all 300ms linear; 
+		} 
+		.menu-items li .link-number-fixed{
+			position: absolute;
+			bottom: 2.5rem;
+			left: 50%;
+			margin-left: 1.875rem;
+			width: 2.5rem;
+			text-align: center;
+			display: block;
+			letter-spacing: 0.125rem;
+			list-style:none;
+			font-size: 0.8125rem;
+			font-weight: 300;
+			line-height: 1;
+			color: #fff;
+			z-index: 6;
+		}
+		.menu-items li .link-number-fixed:before{
+			position: absolute;
+			content: '';
+			top: 50%;
+			left: -3.75rem;
+			width: 3.75rem;
+			height: 0.0625rem;
+			z-index: 1;
+			background-color: rgba(255,255,255,.4);
+		}
+		.menu-items li.show .link-number {
+			opacity: 1;
+			transform: translateY(0);
+		} 
+		.menu-items li.show .link-number-back {
+			opacity: 1;
+		} 
+		.dark-over-hero{
+			position:absolute;
+			width:100%;
+			height:100%;
+			top:0;
+			left:0;
+			z-index:5;
+			background-color: #050505;
+			opacity: 0.2;
+		}
+		.menu-items li:nth-child(1) .menu-background{
+			background-image: url("img-1.jpg");
+		}
+		.menu-items li:nth-child(2) .menu-background{
+			background-image: url("img-2.jpg");
+		}
+		.menu-items li:nth-child(3) .menu-background{
+			background-image: url("img-3.jpeg");
+		}
+		.menu-items li:nth-child(4) .menu-background{
+			background-image: url("img-4.jpg");
+		}
+		.menu-items li:nth-child(5) .menu-background{
+			background-image: url("img-5.jpg");
+		}
+    
+    </style>
+</head>
+<body>
+    <body>
+  
+ 		<div class="section">
+			<ul class="menu">
+				<li class="menu-links">                            	
+					<a href="#" class="menu-links-target">HOME</a>
+				</li>
+				<li class="menu-links">                                         	
+					<a href="#" class="menu-links-target">BLOG</a>
+				</li>
+				<li class="menu-links">                                        	
+					<a href="#" class="menu-links-target">SERVICES </a>
+				</li>
+				<li class="menu-links">                                         	
+					<a href="#" class="menu-links-target">ABOUT</a>
+				</li>
+				<li class="menu-links">                                         	
+					<a href="#" class="menu-links-target">CONTACT</a>
+				</li>
+			</ul>
+			<ul class="menu-items">
+				<li>
+					<div class="menu-background"></div> 
+					<div class="dark-over-hero"></div>  
+					<div class="link-number-back">HOME</div> 
+					<div class="link-number">01</div> 
+					<div class="link-number-fixed">05</div> 
+					<div class="menu-desc">Experience the design </div> 
+				</li>
+				<li>
+					<div class="menu-background"></div> 
+					<div class="link-number-back">BLOG</div> 
+					<div class="link-number">02</div>  
+					<div class="menu-desc">Feel the difference</div> 
+				</li>
+				<li>
+					<div class="menu-background"></div>
+					<div class="link-number-back">SERVICES</div>  
+					<div class="link-number">03</div> 
+					<div class="menu-desc">Creative Process</div> 
+				</li>
+				<li>
+					<div class="menu-background"></div> 
+					<div class="link-number-back">ABOUT</div> 
+					<div class="link-number">04</div> 
+					<div class="menu-desc">Creative Concepts</div> 
+				</li>
+				<li>
+					<div class="menu-background"></div> 
+					<div class="link-number-back">CONTACT</div> 
+					<div class="link-number">05</div> 
+					<div class="menu-desc">WebCodian</div> 
+				</li>
+			</ul>	
+		</div>
+		
+		<!-- Page cursor
+		================================================== -->
+		
+        <div class='cursor' id="cursor"></div>
+        <div class='cursor2' id="cursor2"></div>
+		<div class='cursor3' id="cursor3"></div> 
+  
+<!-- Link to page
+	================================================== -->
+
+ 
+  
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script>
+    
+    (function($) { "use strict";
+		
+	//Page cursors
+
+    document.getElementsByTagName("body")[0].addEventListener("mousemove", function(n) {
+        t.style.left = n.clientX + "px", 
+		t.style.top = n.clientY + "px", 
+		e.style.left = n.clientX + "px", 
+		e.style.top = n.clientY + "px", 
+		i.style.left = n.clientX + "px", 
+		i.style.top = n.clientY + "px"
+    });
+    var t = document.getElementById("cursor"),
+        e = document.getElementById("cursor2"),
+        i = document.getElementById("cursor3");
+    function n(t) {
+        e.classList.add("hover"), i.classList.add("hover")
+    }
+    function s(t) {
+        e.classList.remove("hover"), i.classList.remove("hover")
+    }
+    s();
+    for (var r = document.querySelectorAll(".menu-links-target"), a = r.length - 1; a >= 0; a--) {
+        o(r[a])
+    }
+    function o(t) {
+        t.addEventListener("mouseover", n), t.addEventListener("mouseout", s)
+    }
+	
+	$(document).ready(function() {
+		
+		/* Hero Case study images */			
+		
+		$('.menu-links:nth-child(1)').on('mouseenter', function() {
+			$('.menu-links.active').removeClass('active');
+			$('.menu-items li.show').removeClass("show");
+			$('.menu-items li:nth-child(1)').addClass("show");
+			$('.menu-links:nth-child(1)').addClass('active');
+		})
+		$('.menu-links:nth-child(2)').on('mouseenter', function() {
+			$('.menu-links.active').removeClass('active');
+			$('.menu-items li.show').removeClass("show");
+			$('.menu-items li:nth-child(2)').addClass("show");
+			$('.menu-links:nth-child(2)').addClass('active');
+		})
+		$('.menu-links:nth-child(3)').on('mouseenter', function() {
+			$('.menu-links.active').removeClass('active');
+			$('.menu-items li.show').removeClass("show");
+			$('.menu-items li:nth-child(3)').addClass("show");
+			$('.menu-links:nth-child(3)').addClass('active');
+		})
+		$('.menu-links:nth-child(4)').on('mouseenter', function() {
+			$('.menu-links.active').removeClass('active');
+			$('.menu-items li.show').removeClass("show");
+			$('.menu-items li:nth-child(4)').addClass("show");
+			$('.menu-links:nth-child(4)').addClass('active');
+		})
+		$('.menu-links:nth-child(5)').on('mouseenter', function() {
+			$('.menu-links.active').removeClass('active');
+			$('.menu-items li.show').removeClass("show");
+			$('.menu-items li:nth-child(5)').addClass("show");
+			$('.menu-links:nth-child(5)').addClass('active');
+		})
+					
+	});
+  })(jQuery); 
+</script>
+</body>
+</html>
